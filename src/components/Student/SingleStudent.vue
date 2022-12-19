@@ -3,22 +3,17 @@
   <div class="data" v-if="student">
 
   {{error.load}}
-  <RedactField :error="error.group" class="field" :img-width="'25px'"
-               :name="'Група'" :model="student.group"
-               @change="this.student.group = this.groups.find(el=>el.id==$event.target.value)"
-               :link-conditions="{isLink:true,list:groups, link:'/groups/'+student.group.id}"></RedactField>
+  <RefRedactField :error="error.group" class="field" :img-width="'25px'"
+               :name="'Група'" v-model="student.group"
+               :link-conditions="{list:groups, link:'/groups/'+student.group.id}"></RefRedactField>
 
-  <RedactField :error="error.name" class="field" :img-width="'25px'"
-               :name="'Ім\'я'" :model="student.name"
-               @change="this.student.name = $event.target.value"></RedactField>
+  <SimpleRedactField :error="error.name" class="field" :img-width="'25px'"
+               :name="'Ім\'я'" v-model="student.name"></SimpleRedactField>
+  <SimpleRedactField :error="error.email" class="field" :img-width="'25px'"
+               :name="'Емайл'" v-model="student.email"></SimpleRedactField>
 
-  <RedactField :error="error.email" class="field" :img-width="'25px'"
-               :name="'Емайл'" :model="student.email"
-               @change="this.student.email = $event.target.value"></RedactField>
-
-  <RedactField is-phone="true" :error="error.phone" class="field" :img-width="'25px'"
-               :name="'Телефон'" :model="student.phone"
-               @change="this.student.phone = $event.target.value"></RedactField>
+  <PhoneRedactField  :error="error.phone" class="field" :img-width="'25px'"
+               :name="'Телефон'" v-model="student.phone"></PhoneRedactField>
   <div class="done-section">
     <p>Завершити редагування</p>
     <button style="width: 40px" @click="updateObj(student)" class="edit"><img src="../../assets/imgs/done.png"
@@ -33,10 +28,13 @@
 import RedactField from "../global/RedactField.vue";
 import request from "axios";
 import * as http from "../httpService"
+import RefRedactField from "@/components/global/RedactFields/RefRedactField.vue";
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
+import PhoneRedactField from "@/components/global/RedactFields/PhoneRedactField.vue";
 
 export default {
   name: "SingleStudent",
-  components: {RedactField},
+  components: {PhoneRedactField, SimpleRedactField, RefRedactField, RedactField},
   data: () => ({
     error: {},
     groups: '',

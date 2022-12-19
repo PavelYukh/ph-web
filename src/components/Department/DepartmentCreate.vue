@@ -1,14 +1,17 @@
 <template>
   <div class="wrapper">
 
-    <CreateField
-        :name="'Назва'" input-width="150px" @input="this.department.name=$event.target.value" :error="error.name">
-    </CreateField>
-    <CreateField
+    <SimpleCreateField
+        :name="'Назва'" input-width="150px" v-model="department.name" :error="error.name">
+    </SimpleCreateField>
+    <SimpleCreateField
         :name="'Скорочена Назва'" input-width="150px"
-        @input="this.department.shortName=$event.target.value" :error="error.shortName">
-    </CreateField>
-    <CreateField :error="error.faculty" name="Факультет" @input="this.department.faculty = this.faculties.find(el=>el.id==$event.target.value)" :link-conditions="{isLink: true, list:faculties}"></CreateField>
+        v-model="department.shortName" :error="error.shortName">
+    </SimpleCreateField>
+    <RefCreateField :error="error.faculty" name="Факультет"
+                    v-model="department.faculty"
+                    :input-width="'150px'"
+                    :link-conditions="{list:faculties}"></RefCreateField>
       <button class="create" @click="createOne()">Створити</button>
   </div>
 </template>
@@ -16,10 +19,12 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
+import RefCreateField from "@/components/global/CreateFields/RefCreateField.vue";
 
 export default {
   name: "DepartmentCreate",
-  components: {CreateField},
+  components: {RefCreateField, SimpleCreateField, CreateField},
   data: () => ({
     department: {},
     faculties: '',

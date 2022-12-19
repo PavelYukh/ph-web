@@ -7,21 +7,16 @@
       <option value="teachers">Викладачем</option>
       <option value="disciplines">Предметом</option>
     </select>
-    <select required v-if="searchBy==='groups'" v-model="chosen" class="chooseGroup">
-      <option disabled value="">Оберіть групу</option>
-      <option v-for="group of groups" :value="group.id">{{ group.name }}</option>
-    </select>
+    <v-select class="select" :reduce="entity=>entity.id" v-if="searchBy==='groups'" label="name" v-model="chosen" :options="groups"></v-select>
+    <v-select class="select" :reduce="entity=>entity.id" v-if="searchBy==='teachers'" label="fullname" v-model="chosen" :options="teachers"></v-select>
+    <v-select class="select" :reduce="entity=>entity.id" v-if="searchBy==='disciplines'" label="name" v-model="chosen" :options="disciplines"></v-select>
+<!--    <select required v-if="searchBy==='groups'" v-model="chosen" class="chooseGroup">-->
+<!--      <option disabled value="">Оберіть групу</option>-->
+<!--      <option v-for="group of groups" :value="group.id">{{ group.name }}</option>-->
+<!--    </select>-->
 
-    <select required v-else-if="searchBy==='teachers'" v-model="chosen" class="chooseGroup">
-      <option disabled value="">Оберіть викладача</option>
-      <option v-for="teacher of teachers" :value="teacher.id">{{ teacher.name }} {{ teacher.surname }}</option>
-    </select>
 
-    <select required v-else-if="searchBy==='disciplines'" v-model="chosen" class="chooseGroup">
-      <option disabled value="">Оберіть предмет</option>
-      <option v-for="discipline of disciplines" :value="discipline.id">{{ discipline.name }}</option>
 
-    </select>
 
     <p>{{ error }}</p>
     <div class="cards">
@@ -34,10 +29,11 @@
 import request from 'axios';
 import ScheduleCard from './ScheduleCard.vue';
 import * as http from "@/components/httpService";
-
+import 'vue-select/dist/vue-select.css'
+import vSelect from 'vue-select';
 export default {
   name: "Schedule",
-  components: {ScheduleCard},
+  components: {ScheduleCard, vSelect},
 
   data: () => ({
     searchOptions: {
@@ -107,6 +103,7 @@ export default {
     const teachers = await http.getAll('teacher')
     const disciplines = await http.getAll('discipline')
     this.groups = groups.data;
+    teachers.data.forEach(el=> el.fullname = el.name + ' ' + el.surname);
     this.teachers = teachers.data;
     this.disciplines = disciplines.data;
 
@@ -137,5 +134,10 @@ export default {
 .chooseGroup {
   margin-top: 20px;
   font-size: 120%;
+}
+.select{
+  margin-top: 5px;
+  min-width: 100px;
+  background-color: white;
 }
 </style>

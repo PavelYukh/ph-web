@@ -1,24 +1,24 @@
 <template>
   <div class="wrapper">
 
-    <CreateField
-        :name="'Назва'" input-width="150px" @input="this.group.name=$event.target.value" :error="error.name">
-    </CreateField>
+    <SimpleCreateField
+        :name="'Назва'" input-width="150px" v-model="group.name" :error="error.name">
+    </SimpleCreateField>
 
-    <CreateField :error="error.course"
+    <SelectCreateField :error="error.course"
                  :name="'Курс'"
-                 @input="this.group.course = $event.target.value" :link-conditions="{isLink:false,list:[
+                 v-model="group.course" :link-conditions="{list:[
                        {value:1,name:1},
                        {value:2,name:2},
                        {value:3,name:3},
                        {value:4,name:4},
                        {value:5,name:5},
                        {value:6,name:6},
-                         ]}"></CreateField>
+                         ]}"></SelectCreateField>
 
 
-    <CreateField :error="error.department" name="Спеціальність"
-                 @input="this.group.department = this.departments.find(el=>el.id==$event.target.value)" :link-conditions="{isLink: true, list:departments}"></CreateField>
+    <RefCreateField :error="error.department" name="Спеціальність"
+                v-model="group.department" :link-conditions="{list:departments}"></RefCreateField>
     <button class="create" @click="createOne()">Створити</button>
   </div>
 </template>
@@ -26,10 +26,13 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
+import SelectCreateField from "@/components/global/CreateFields/SelectCreateField.vue";
+import RefCreateField from "@/components/global/CreateFields/RefCreateField.vue";
 
 export default {
   name: "GroupCreate",
-  components: {CreateField},
+  components: {RefCreateField, SelectCreateField, SimpleCreateField, CreateField},
   data: () => ({
     group: {},
     departments: '',

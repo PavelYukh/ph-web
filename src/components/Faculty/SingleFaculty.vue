@@ -2,10 +2,10 @@
   <div class="wrapper">
     <p>{{error.load}}</p>
     <div class="data" v-if="faculty">
-      <RedactField :error="error.name" :img-width="'25px'" :input-width="'300px'"
-                   :name="'Назва'" :model="faculty.name" @change="this.faculty.name = $event.target.value"></RedactField>
-   <RedactField :error="error.shortName" :img-width="'25px'" :input-width="'50px'"
-                   :name="'Скорочена назва'" :model="faculty.shortName" @change="this.faculty.shortName = $event.target.value"></RedactField>
+      <SimpleRedactField :error="error.name" :img-width="'25px'" :input-width="'300px'"
+                   :name="'Назва'" v-model="faculty.name"></SimpleRedactField>
+   <SimpleRedactField :error="error.shortName" :img-width="'25px'" :input-width="'50px'"
+                   :name="'Скорочена назва'" v-model="faculty.shortName"></SimpleRedactField>
       <div class="done-section">
         <p>Завершити редагування</p>
         <button style="width: 40px" @click="updateObj(faculty)" class="edit"><img src="../../assets/imgs/done.png" alt=""></button>
@@ -22,9 +22,10 @@ import ScheduleCard from "../Schedule/ScheduleCard.vue";
 import request from "axios";
 import RedactField from '../global/RedactField.vue';
 import * as http from '../httpService'
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
 export default {
   name: "SingleDiscipline",
-  components: {ScheduleCard, RedactField},
+  components: {SimpleRedactField, ScheduleCard, RedactField},
   data: () => ({
     faculty: '',
     error: {},

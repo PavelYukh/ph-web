@@ -1,7 +1,7 @@
 <template>
 
 <div class="card">
-  <p><RouterLink :to="`/discipline/${schedule.discipline.id}`">{{schedule.discipline.name}}</RouterLink></p>
+  <p><RouterLink :to="`/disciplines/${schedule.discipline.id}`">{{schedule.discipline.name}}</RouterLink></p>
   <hr>
 
   <div class="info">

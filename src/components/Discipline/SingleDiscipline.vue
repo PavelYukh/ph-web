@@ -3,8 +3,8 @@
     <p>{{error.load}}</p>
     <div class="data" v-if="discipine">
 
-      <RedactField :error="error.name" :img-width="'25px'" :input-width="'150px'"
-                   :name="'Назва'" :model="discipine.name" @change="this.discipine.name = $event.target.value"></RedactField>
+      <SimpleRedactField :error="error.name" :img-width="'25px'" :input-width="'300px'"
+                   :name="'Назва'" v-model="discipine.name"></SimpleRedactField>
       <div class="done-section">
         <p>Завершити редагування</p>
         <button style="width: 40px" @click="updateObj(discipine)" class="edit"><img src="../../assets/imgs/done.png" alt=""></button>
@@ -21,9 +21,10 @@ import ScheduleCard from "../Schedule/ScheduleCard.vue";
 import request from "axios";
 import RedactField from '../global/RedactField.vue';
 import * as http from '../httpService'
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
 export default {
   name: "SingleDiscipline",
-  components: {ScheduleCard, RedactField},
+  components: {SimpleRedactField, ScheduleCard, RedactField},
   data: () => ({
     discipine: '',
     error: {},

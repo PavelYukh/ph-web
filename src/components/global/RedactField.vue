@@ -7,8 +7,8 @@
       <template v-else>
       <input v-if="isPhone" v-mask="'+38(0##)###-##-##'" :style="{width:inputWidth}" type="text" :value="model"
              @change="$emit('change', $event.target.value)">
-    <input v-else  :style="{width:inputWidth}" type="text" :value="model"
-             @change="$emit('change', $event.target.value)">
+<!--    <input v-else  :style="{width:inputWidth}" type="text" :value="model"-->
+<!--             @change="$emit('change', $event.target.value)">-->
       </template>
     </template>
     <template v-else>
@@ -22,18 +22,18 @@
       </template>
 
       <template v-else>
-        <RouterLink style="font-size: 120%" v-if="!editCondition" @change="$emit('change', $event.target.value)"
-                    :to="linkConditions.link">
-          {{ linkConditions.listConditions ? linkConditions.listConditions.name.map(el => model[el]).join(" ") : model.name }}
-        </RouterLink>
-        <select autocomplete="on" v-else @change="$emit('change', $event.target.value)">
-          <option value="" disabled selected></option>
-          <option v-for="option of linkConditions.list" :value="option.id">
-            {{
-              linkConditions.listConditions ? linkConditions.listConditions.name.map(el => option[el]).join(" ") : option.name
-            }}
-          </option>
-        </select>
+<!--        <RouterLink style="font-size: 120%" v-if="!editCondition" @change="$emit('change', $event.target.value)"-->
+<!--                    :to="linkConditions.link">-->
+<!--          {{ linkConditions.listConditions ? linkConditions.listConditions.name.map(el => model[el]).join(" ") : model.name }}-->
+<!--        </RouterLink>-->
+<!--        <select autocomplete="on" v-else @change="$emit('change', $event.target.value)">-->
+<!--          <option value="" disabled selected></option>-->
+<!--          <option v-for="option of linkConditions.list" :value="option.id">-->
+<!--            {{-->
+<!--              linkConditions.listConditions ? linkConditions.listConditions.name.map(el => option[el]).join(" ") : option.name-->
+<!--            }}-->
+<!--          </option>-->
+<!--        </select>-->
       </template>
     </template>
     <div @click="editCondition=!editCondition" :style="{width:imgWidth}" class="edit"><img

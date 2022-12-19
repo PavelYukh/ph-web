@@ -38,7 +38,7 @@ export const deleteOne = (link) => {
 export const createOne = async (link, data) => {
     try {
         return await request.post(backend + link, data);
-    } catch (e) {
+    } catch(e) {
         const entity = link.replace(/\/.+/, '');
         if (e.response.status === 400) {
             const res = {};

@@ -1,11 +1,11 @@
 <template>
   <div class="wrapper">
-    <CreateField
-        :name="'Назва'" input-width="150px" @input="this.faculty.name=$event.target.value" :error="error.name">
-    </CreateField>
-    <CreateField
-        :name="'Cкорочена назва'" input-width="150px" @input="this.faculty.shortName=$event.target.value" :error="error.shortName">
-    </CreateField>
+    <SimpleCreateField
+        :name="'Назва'" input-width="150px" v-model="faculty.name" :error="error.name">
+    </SimpleCreateField>
+    <SimpleCreateField
+        :name="'Cкорочена назва'" input-width="150px"  v-model="faculty.shortName" :error="error.shortName">
+    </SimpleCreateField>
     <button class="create" @click="createOne()">Створити</button>
 
   </div>
@@ -14,10 +14,11 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
 
 export default {
   name: "FacultyCreate",
-  components: {CreateField},
+  components: {SimpleCreateField, CreateField},
   data: () => ({
     faculty: {},
     error: {}

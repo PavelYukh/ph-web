@@ -3,27 +3,27 @@
     <p>{{ error.load }}</p>
     <div class="data" v-if="schedule">
 
-      <RedactField :error="error.discipline" style="font-size: 140%" :img-width="'25px'" name="Предмет" :model="schedule.discipline"
-                   @change="this.schedule.discipline = this.disciplines.find(el=>el.id==$event.target.value)"
-                   :link-conditions="{isLink:true,list:disciplines, link:'/disciplines/'+schedule.discipline.id,}"
-      ></RedactField>
+      <RefRedactField :error="error.discipline" style="font-size: 120%" :input-width="'150px'" :img-width="'25px'"
+                      name="Предмет" v-model="schedule.discipline"
+                      :link-conditions="{list:disciplines, link:'/disciplines/'+schedule.discipline.id,}"
+      ></RefRedactField>
       <hr>
 
       <div class="info">
-        <RedactField :img-width="'25px'"
-                     :error="error.teacher"
-                     :name="'Викладач'" :model="schedule.teacher"
-                     @change="this.schedule.teacher = this.teachers.find(el=>el.id==$event.target.value)"
-                     :link-conditions="{isLink:true,list:teachers, link:'/teachers/'+schedule.teacher.id,
-                    listConditions:{name:['name', 'surname']}
-                     }"></RedactField>
-             <RedactField :error="error.group" :img-width="'25px'" name="Група" :model="schedule.group"
-                       @change="this.schedule.group = this.groups.find(el=>el.id==$event.target.value)"
-                       :link-conditions="{isLink:true,list:groups, link:'/groups/'+schedule.group.id,}"
-          ></RedactField>
-           <RedactField class="field" :img-width="'25px'" :error="error.time"
-                     :name="'День тижня'" :model="schedule.time"
-                     @change="this.schedule.time = $event.target.value" :link-conditions="{isLink:false,list:[
+        <RefRedactField :img-width="'25px'"
+                        :error="error.teacher"
+                        :name="'Викладач'"
+                        v-model="schedule.teacher"
+                        :input-width="'150px'"
+                        :link-conditions="{label:'fullName',list:teachers, link:'/teachers/'+schedule.teacher.id
+                     }"></RefRedactField>
+        <RefRedactField :error="error.group" :img-width="'25px'" name="Група" v-model="schedule.group"
+                        :link-conditions="{list:groups, link:'/groups/'+schedule.group.id,}"
+        ></RefRedactField>
+        <SelectRedactField class="field" :img-width="'25px'" :error="error.time"
+                           :name="'День тижня'" v-model="schedule.time" :link-conditions="{
+                       convert:{function:this.getDate},
+                       list:[
                        {value:schedule.time.replace(/^./, 0), name:'Понеділок'},
                        {value:schedule.time.replace(/^./, 1), name:'Вівторок'},
                        {value:schedule.time.replace(/^./, 2), name:'Середа'},
@@ -31,29 +31,31 @@
                        {value:schedule.time.replace(/^./, 4), name:'П\'ятниця'},
                        {value:schedule.time.replace(/^./, 5), name:'Субота'},
                        {value:schedule.time.replace(/^./, 6), name:'Неділя'}],
-                       additionalShow:date}"></RedactField>
+                       additionalShow:date}"></SelectRedactField>
 
-        <RedactField class="field" :img-width="'25px'" :error="error.time"
-                     :name="'Час'" :model="schedule.time"
-                     @change="this.schedule.time = $event.target.value" :link-conditions="{isLink:false,list:[
+        <SelectRedactField class="field" :img-width="'25px'" v-model="schedule.time"
+                           :name="'Час'"
+
+                           :link-conditions="{convert:{function:this.getTime},
+list:[
                        {value:schedule.time.replace(/.$/, 1), name:'8:30'},
                        {value:schedule.time.replace(/.$/, 2), name:'10:25'},
                        {value:schedule.time.replace(/.$/, 3), name:'12:20'},
                        {value:schedule.time.replace(/.$/, 4), name:'14:15'},
                        {value:schedule.time.replace(/.$/, 5), name:'16:10'},
                        {value:schedule.time.replace(/.$/, 6), name:'18:30'}],
-                       additionalShow:time}"></RedactField>
+                       additionalShow:time}"></SelectRedactField>
 
-        <RedactField :model="schedule.classroom" :error="error.classroom" :img-width="'25px'" :name="'Кабінет'"
-                     @change="this.schedule.classroom = $event.target.value"></RedactField>
-          </div>
-    <div class="done-section">
-      <p>Завершити редагування</p>
-      <button style="width: 40px" @click="updateObj(schedule)" class="edit"><img src="../../assets/imgs/done.png"
-                                                                                 alt=""></button>
+        <SimpleRedactField :error="error.classroom" :img-width="'25px'" :name="'Кабінет'"
+                           v-model="schedule.classroom"></SimpleRedactField>
+      </div>
+      <div class="done-section">
+        <p>Завершити редагування</p>
+        <button style="width: 40px" @click="updateObj(schedule)" class="edit"><img src="../../assets/imgs/done.png"
+                                                                                   alt=""></button>
+      </div>
+      <button class="delete" @click="deleteOne()">Видалити</button>
     </div>
-    <button class="delete" @click="deleteOne()">Видалити</button>
-  </div>
   </div>
 </template>
 
@@ -61,16 +63,20 @@
 import request from "axios";
 import RedactField from '../global/RedactField.vue';
 import * as http from '../httpService'
+import RefRedactField from "@/components/global/RedactFields/RefRedactField.vue";
+import SelectRedactField from "@/components/global/RedactFields/SelectRedactField.vue";
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
+
 export default {
   name: "SingleSchedule",
-  components: {RedactField},
+  components: {SimpleRedactField, SelectRedactField, RefRedactField, RedactField},
   data: () => ({
     schedule: '',
-    disciplines:'',
+    disciplines: '',
     date: '',
     time: '',
     teachers: '',
-    groups:'',
+    groups: '',
     error: {},
     weekDays: {
       '0': 'Понеділок',
@@ -104,6 +110,12 @@ export default {
       this.date = this.weekDays[split[0]] || '';
       this.time = this.timePairs[split[1]] || '';
     },
+    getDate(date) {
+      return this.weekDays[date.split("-")[0]] || ''
+    },
+    getTime(date) {
+      return this.timePairs[date.split("-")[1]] || ''
+    },
     async updateObj(schedule) {
       try {
         await http.updateOne("schedule/" + this.$route.params.id, schedule);
@@ -123,11 +135,12 @@ export default {
   async created() {
     try {
       this.teachers = (await http.getAll("teacher")).data;
+      this.teachers.forEach(teacher => teacher.fullName = teacher.name + ' ' + teacher.surname);
       this.groups = (await http.getAll("group")).data;
       this.disciplines = (await http.getAll("discipline")).data;
       const data = await (http.getAll("schedule/" + this.$route.params.id));
       this.schedule = data.data;
-
+      this.schedule.teacher.fullName = this.schedule.teacher.name + ' ' + this.schedule.teacher.surname;
       this.parseDateTime();
     } catch (ex) {
       if (ex.response.status === 400) {

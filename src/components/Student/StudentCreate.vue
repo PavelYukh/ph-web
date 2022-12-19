@@ -1,23 +1,21 @@
 <template>
   <div class="wrapper">
-    <CreateField :error="error.group"
+    <RefCreateField :error="error.group"
                  :name="'Група'"
-                 @input="this.student.group = this.groups.find(el=>el.id==$event.target.value)"
-                 :link-conditions="{isLink:true,list:groups}"></CreateField>
+                 v-model="student.group"
+                 :link-conditions="{list:groups}"></RefCreateField>
 
-    <CreateField :error="error.name"
+    <SimpleCreateField :error="error.name"
                  :name="'Ім\'я'"
-                 @input="this.student.name = $event.target.value"></CreateField>
+                 v-model="student.name"></SimpleCreateField>
 
-    <CreateField :error="error.email"
+    <SimpleCreateField :error="error.email"
                  :name="'Емайл'"
-                 @input="this.student.email = $event.target.value"></CreateField>
+                 v-model="student.email"></SimpleCreateField>
 
-    <CreateField :error="error.phone"
+    <PhoneCreateField :error="error.phone"
                  :name="'Телефон'"
-                 :is-phone="true"
-                 is-phone="true"
-                 @input="this.student.phone = $event.target.value"></CreateField>
+                 v-model="student.phone"></PhoneCreateField>
 
     <button class="create" @click="createOne()">Створити</button>
 
@@ -28,10 +26,13 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import RefCreateField from "@/components/global/CreateFields/RefCreateField.vue";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
+import PhoneCreateField from "@/components/global/CreateFields/PhoneCreateField.vue";
 
 export default {
   name: "StudentCreate",
-  components: {CreateField},
+  components: {PhoneCreateField, SimpleCreateField, RefCreateField, CreateField},
   data: () => ({
     student: {},
     groups:'',

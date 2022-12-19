@@ -4,25 +4,23 @@
     <p>{{ error.load }}</p>
     <div class="data" v-if="group">
 
-      <RedactField :error="error.discipline" :img-width="'25px'" name="Cпеціальність" :model="group.department"
-                   @change="this.group.department = this.departments.find(el=>el.id==$event.target.value)"
-                   :link-conditions="{isLink:true,list:departments, link:'/departments/'+group.department.id,}"
-      ></RedactField>
+      <RefRedactField :error="error.department" :img-width="'25px'" name="Cпеціальність"
+                   v-model="this.group.department" :input-width="'250px'"
+                   :link-conditions="{label:'name',list:departments, link:'/departments/'+group.department.id,}"
+      ></RefRedactField>
 
-      <RedactField :error="error.name"  :img-width="'25px'" :input-width="'60px'"
-                   :name="'Назва'" :model="group.name"
-                   @change="this.group.name = $event.target.value"></RedactField>
+      <SimpleRedactField :error="error.name"  :img-width="'25px'" :input-width="'60px'"
+                   :name="'Назва'" v-model="group.name"></SimpleRedactField>
 
-        <RedactField :error="error.course"  :img-width="'25px'"
-                     :name="'Курс'" :model="group.course"
-                     @change="this.group.course = $event.target.value" :link-conditions="{isLink:false,list:[
+        <SelectRedactField :error="error.course"  :img-width="'25px'"
+                     :name="'Курс'" v-model="group.course" :link-conditions="{label:'name',list:[
                        {value:1,name:1},
                        {value:2,name:2},
                        {value:3,name:3},
                        {value:4,name:4},
                        {value:5,name:5},
                        {value:6,name:6},
-                         ]}"></RedactField>
+                         ]}"></SelectRedactField>
 
 
 
@@ -40,10 +38,13 @@
 import request from "axios";
 import RedactField from "@/components/global/RedactField.vue";
 import * as http from "@/components/httpService";
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
+import RefRedactField from "@/components/global/RedactFields/RefRedactField.vue";
+import SelectRedactField from "@/components/global/RedactFields/SelectRedactField.vue";
 
 export default {
   name: "SingleGroup",
-  components: {RedactField},
+  components: {SelectRedactField, RefRedactField, SimpleRedactField, RedactField},
   data: () => ({
     group: '',
     error: {},

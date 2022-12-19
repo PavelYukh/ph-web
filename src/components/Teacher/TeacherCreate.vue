@@ -1,18 +1,18 @@
 <template>
   <div class="wrapper">
-    <CreateField
-        :name="'Ім\'я'" input-width="150px" @input="this.teacher.name=$event.target.value" :error="error.name">
-    </CreateField>
-  <CreateField
-        :name="'Прізвище'" input-width="150px" @input="this.teacher.surname=$event.target.value" :error="error.surname">
-    </CreateField>
-  <CreateField
-        :name="'Емайл'" input-width="150px" @input="this.teacher.email=$event.target.value" :error="error.email">
-    </CreateField>
-  <CreateField
+    <SimpleCreateField
+        :name="'Ім\'я'" input-width="150px" v-model="teacher.name" :error="error.name">
+    </SimpleCreateField>
+  <SimpleCreateField
+        :name="'Прізвище'" input-width="150px" v-model="teacher.surname" :error="error.surname">
+    </SimpleCreateField>
+  <SimpleCreateField
+        :name="'Емайл'" input-width="150px" v-model="teacher.email" :error="error.email">
+    </SimpleCreateField>
+  <PhoneCreateField
       is-phone="true"
-        :name="'Телефон'" input-width="150px" @input="this.teacher.phone=$event.target.value" :error="error.phone">
-    </CreateField>
+        :name="'Телефон'" input-width="150px" v-model="teacher.phone" :error="error.phone">
+    </PhoneCreateField>
      <button class="create" @click="createOne()">Створити</button>
 
   </div>
@@ -22,10 +22,13 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
+import PhoneCreateField from "@/components/global/CreateFields/PhoneCreateField.vue";
+
 
 export default {
   name: "TeacherCreate",
-  components: {CreateField},
+  components: {PhoneCreateField, SimpleCreateField, CreateField},
   data: () => ({
     teacher: {},
     error:{}

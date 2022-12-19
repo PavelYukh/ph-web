@@ -5,18 +5,14 @@
     <div class="basic-info">
 
 
-      <RedactField  :error="error.surname" :img-width="'25px'" :input-width="'100px'"
-                   :name="'Прізвище'" :model="teacher.surname"
-                   @change="this.teacher.surname = $event.target.value"></RedactField>
-      <RedactField :error="error.name"  :img-width="'25px'" :input-width="'100px'"
-                   :name="'Ім\'я'" :model="teacher.name"
-                   @change="this.teacher.name = $event.target.value"></RedactField>
-      <RedactField :error="error.email"  :img-width="'25px'" :input-width="'150px'"
-                   :name="'Eмаіл'" :model="teacher.email"
-                   @change="this.teacher.email = $event.target.value"></RedactField>
-      <RedactField :error="error.phone"  :img-width="'25px'" :input-width="'150px'"
-                   :name="'Телефон'" :model="teacher.phone" is-phone="true"
-                   @change="this.teacher.phone = $event.target.value"></RedactField>
+      <SimpleRedactField  :error="error.surname" :img-width="'25px'" :input-width="'100px'"
+                   :name="'Прізвище'" v-model="teacher.surname"></SimpleRedactField>
+      <SimpleRedactField :error="error.name"  :img-width="'25px'" :input-width="'100px'"
+                   :name="'Ім\'я'" v-model="teacher.name"></SimpleRedactField>
+      <SimpleRedactField :error="error.email"  :img-width="'25px'" :input-width="'150px'"
+                   :name="'Eмаіл'" v-model="teacher.email"></SimpleRedactField>
+      <PhoneRedactField :error="error.phone"  :img-width="'25px'" :input-width="'150px'"
+                   :name="'Телефон'" v-model="teacher.phone"></PhoneRedactField>
 
     </div>
     <div class="done-section">
@@ -33,9 +29,11 @@ import request from "axios";
 import ScheduleCard from "@/components/Schedule/ScheduleCard.vue";
 import RedactField from "@/components/global/RedactField.vue";
 import * as http from '../httpService';
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
+import PhoneRedactField from "@/components/global/RedactFields/PhoneRedactField.vue";
 export default {
   name: "SingleTeacher",
-  components: {ScheduleCard, RedactField},
+  components: {PhoneRedactField, SimpleRedactField, ScheduleCard, RedactField},
   data: () => ({
 
     teacher: '',

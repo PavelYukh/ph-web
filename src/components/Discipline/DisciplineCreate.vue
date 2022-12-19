@@ -1,8 +1,8 @@
-<template>
+  <template>
   <div class="wrapper">
-  <CreateField
-      :name="'Назва'" input-width="150px" @input="this.discipline.name=$event.target.value" :error="error.name">
-  </CreateField>
+  <SimpleCreateField
+      :name="'Назва'" input-width="150px" v-model="discipline.name" :error="error.name">
+  </SimpleCreateField>
     <button class="create" @click="createOne()">Створити</button>
 
   </div>
@@ -12,10 +12,11 @@
 <script>
 import CreateField from "@/components/global/CreateField.vue";
 import {createOne, getAll} from "@/components/httpService";
+import SimpleCreateField from "@/components/global/CreateFields/SimpleCreateField.vue";
 
 export default {
   name: "DisciplineCreate",
-  components: {CreateField},
+  components: {SimpleCreateField, CreateField},
   data: () => ({
     discipline: {},
     error:{}

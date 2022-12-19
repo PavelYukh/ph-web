@@ -3,14 +3,14 @@
   <p>{{error.load}}</p>
   <div class="data" v-if="department">
 
-    <RedactField :error="error['name']" :img-width="'25px'" :input-width="'300px'"
-                 :name="'Назва'" :model="department.name" @change="this.department.name = $event.target.value"></RedactField>
-   <RedactField :error="error['shortName']" :img-width="'25px'" :input-width="'150px'"
-                 :name="'Скорочена назва'" :model="department.shortName" @change="this.department.shortName = $event.target.value"></RedactField>
-    <RedactField :error="error['faculty']" :img-width="'25px'" name="Факультет" :model="department.faculty"
-                 @change="this.department.faculty = this.faculties.find(el=>el.id==$event.target.value)"
-                 :link-conditions="{isLink:true,list:faculties, link:'/faculties/'+department.faculty.id,}"
-    ></RedactField>
+    <SimpleRedactField :error="error['name']" :img-width="'25px'" :input-width="'300px'"
+                 :name="'Назва'" v-model="department.name"></SimpleRedactField>
+   <SimpleRedactField :error="error['shortName']" :img-width="'25px'" :input-width="'150px'"
+                 :name="'Скорочена назва'" v-model="department.shortName"></SimpleRedactField>
+    <RefRedactField :error="error['faculty']" :img-width="'25px'" :input-width="'300px'" name="Факультет"
+                v-model="department.faculty"
+                 :link-conditions="{list:faculties, link:'/faculties/'+department.faculty.id, label:'name'}"
+    ></RefRedactField>
     <div class="done-section">
       <p>Завершити редагування</p>
       <button style="width: 40px" @click="updateObj(department)" class="edit"><img src="../../assets/imgs/done.png" alt=""></button>
@@ -26,9 +26,11 @@
 import RedactField from '../global/RedactField.vue';
 import ScheduleCard from "@/components/Schedule/ScheduleCard.vue";
 import * as http from "@/components/httpService";
+import SimpleRedactField from "@/components/global/RedactFields/SimpleRedactField.vue";
+import RefRedactField from "@/components/global/RedactFields/RefRedactField.vue";
 export default {
   name: "SingleDepartment",
-  components: {RedactField},
+  components: {SimpleRedactField, RefRedactField},
   data: () => ({
     department: '',
     faculties:'',
